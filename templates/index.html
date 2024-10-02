@@ -3,13 +3,16 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Todo App</title>
+    <title>Todo App - Flask</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
     <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script src="{{ url_for('static', filename='js/background.js') }}" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.min.js" defer></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
 <body>
+    <canvas id="background-canvas"></canvas>
+
     <div class="container" x-data="todoApp()">
         <h1>Todo App by Brijesh Adeshara</h1>
         <form class="todo-form" @submit.prevent="addTodo">
@@ -47,7 +50,7 @@
     </div>
 
     <footer>
-        <p>Created by <a href="https://github.com/AdesharaBrijesh" target="_blank">AdesharaBrijesh</a> with Code!</p>
+        <p>Created by <a href="https://github.com/AdesharaBrijesh" target="_blank">AdesharaBrijesh</a> with Creativity!</p>
     </footer>
 </body>
 </html>
