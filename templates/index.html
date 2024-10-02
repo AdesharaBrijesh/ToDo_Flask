@@ -2,25 +2,52 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Flask</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modern Todo App</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+    <script src="{{ url_for('static', filename='js/app.js') }}" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/alpinejs/3.10.5/cdn.min.js" defer></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment.min.js"></script>
 </head>
 <body>
-    <h1>Todos</h1>
-    <ul>
-        {% for todo in todos %}
-            <li>
-                <input type="checkbox" name="done" {% if todo['done'] %} checked {%endif%} disabled onchange = "this.form.submit()" >
-                <span {% if todo['done'] %} style="text-decoration: line-through;" {%endif%} > {{todo['todo']}} </span>
-                <a href="{{url_for('check', index=loop.index0)}}">Check</a>
-                <a href="{{url_for('edit', index=loop.index0)}}">Edit</a>
-                <a href="{{url_for('delete', index=loop.index0)}}">Delete</a>
-            </li>
-        {% endfor %}
-    </ul>
+    <div class="container" x-data="todoApp()">
+        <h1>Todo App by Brijesh Adeshara</h1>
+        <form class="todo-form" @submit.prevent="addTodo">
+            <input type="text" x-model="newTodo" placeholder="Add a new todo..." class="todo-input">
+            <button type="submit" class="todo-submit">Add</button>
+        </form>
+        <div class="todo-list-container">
+            <ul class="todo-list">
+                <template x-for="(todo, index) in todos" :key="index">
+                    <li class="todo-item">
+                        <input type="checkbox" :checked="todo.done" @change="toggleTodo(index)" class="todo-checkbox">
+                        <div>
+                            <span :class="{ 'todo-text': true, 'completed': todo.done }" x-text="todo.todo"></span>
+                            <div class="todo-date" x-text="formatDate(todo.date)"></div>
+                        </div>
+                        <div class="todo-actions">
+                            <button @click="editTodo(index)" class="todo-action edit">Edit</button>
+                            <button @click="deleteTodo(index)" class="todo-action delete">Delete</button>
+                        </div>
+                    </li>
+                </template>
+            </ul>
+        </div>
+    </div>
 
-    <form action="{{url_for('add')}}" method="post">
-        <input type="text" name="todo" placeholder="Enter todo">
-        <button type="submit">Add</button>
+    <div id="editModal" class="modal">
+        <div class="modal-content">
+            <span class="close">&times;</span>
+            <h2>Edit Todo</h2>
+            <form id="editForm">
+                <input type="text" id="editInput" class="todo-input" style="width: 100%; margin-bottom: 1rem;">
+                <button type="submit" class="todo-submit" style="width: 100%;">Update</button>
+            </form>
+        </div>
+    </div>
 
+    <footer>
+        <p>Created by <a href="https://github.com/AdesharaBrijesh" target="_blank">AdesharaBrijesh</a> with Code!</p>
+    </footer>
 </body>
 </html>
